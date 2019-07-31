@@ -39,7 +39,7 @@ int main()
 
 	if (listen(listenSock, SOMAXCONN) != 0)
 		HandleError("Failed to listen.");
-		
+
 	char data[BuffSize];
 	while (true)
 	{

@@ -25,24 +25,33 @@ void HandleError(std::string message)
 int main()
 {
 	WSAData wsaData;
-
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		HandleError("Failed to initialize library.");
 
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	SOCKET listenSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (listenSock == INVALID_SOCKET)
+		HandleError("Failed to create socket.");
+
 	sockaddr addr = CreateAddress("127.0.0.1", 4790);
 
-	if (connect(sock, &addr, sizeof(sockaddr)) != 0)
-		HandleError("Failed to connect to server.");
+	if (bind(listenSock, &addr, sizeof(sockaddr)) != 0)
+		HandleError("Failed to bind socket.");
 
-	char data[] = "Hello from client!";
-	if (send(sock, data, BuffSize, NULL) == SOCKET_ERROR)
-		HandleError("Failed to send data.");
-	
-	if (recv(sock, data, BuffSize, NULL) == SOCKET_ERROR)
-		HandleError("Failed to receive data from server.");
+	if (listen(listenSock, SOMAXCONN) != 0)
+		HandleError("Failed to listen.");
 
-	closesocket(sock);
+	char data[BuffSize];
+	while (true)
+	{
+		SOCKET clientSock = accept(listenSock, NULL, NULL);
+
+		if (recv(clientSock, data, BuffSize, NULL) == SOCKET_ERROR)
+			HandleError("Failed to receive data from client.");
+
+		std::cout << "Data from client: " << data << std::endl;
+
+		closesocket(clientSock);
+	}
 
 	WSACleanup();
 	system("pause");
