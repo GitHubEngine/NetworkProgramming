@@ -8,3 +8,11 @@
 - [ ] Add message printing on the server
 
 ### LAB 4
+
+```javascript
+function fancyAlert(arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
+}
+```
