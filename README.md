@@ -1,5 +1,10 @@
 # NetworkProgramming
 
-- [x] Finish my changes
-- [ ] Push my commits to GitHub
-- [ ] Open a pull request
+### LAB 2
+- [ ] Change CreateAddress function
+
+### LAB 3
+- [ ] Change CreateAddress function
+- [ ] Add message printing on the server
+
+### LAB 4
